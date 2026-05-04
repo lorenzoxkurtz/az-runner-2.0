@@ -1,0 +1,53 @@
+ def run(playwright: Playwright) -> None:
+         # Launch browser
+         browser = playwright.chromium.launch(headless=False)
+         context = browser.new_context()
+         page = context.new_page()
+
+         # Go to platform and login
+         page.goto("https://app.redeaz.com.br/")
+         page.get_by_role("link", name="Logo HUB Entrar com a LEX").click()
+         page.locator("a").filter(has_text="AlunoAcesse com login e senha").click()
+
+         page.get_by_role("textbox", name="Digite seu login/e-mail*").fill("lolorenzo")
+         page.get_by_role("textbox", name="Digite sua senha*").fill("steven42")
+
+         # enter
+         page.get_by_role("button", name="Entrar").click()
+
+         # Navigate to course and English chapter
+         page.get_by_text("ENSINO MÉDIO - 1ª SÉRIE - (").click()
+         page.get_by_role("button", name="Atividades").click()
+         page.get_by_text("INGLÊS").click()
+         page.get_by_text("USED TO / BE USED TO/ GET").click()
+
+         # Open activity
+         page.locator("#application-header > .jss102.jss96.jss783").click()
+         page.get_by_text("AZ Check").click()
+         # page.get_by_role("button", name="Começar").click()
+
+         page.wait_for_selector('[role="radio"]')
+         # ANSWERS for NOUNS / ADJECTIVES (chapter 2)
+         answers = list("CDBAAEACDE")
+
+         page.get_by_role("tab", name="Cartão-resposta").click()
+         page.get_by_role("radio", name="A").first.check()
+         page.get_by_role("radio", name="B").nth(1).check()
+         page.get_by_role("radio", name="B").nth(2).check()
+         page.get_by_role("radio", name="B").nth(3).check()
+         page.get_by_role("radio", name="B").nth(4).check()
+         page.get_by_role("radio", name="B").nth(5).check()
+         page.locator("div:nth-child(9) > .jss970 > #application_answer_button_1 > .jss102 > .jss101 > .jss793").check()
+         page.locator(
+             "div:nth-child(10) > .jss970 > #application_answer_button_1 > .jss102 > .jss101 > .jss793").check()
+         page.locator(
+             "div:nth-child(11) > .jss970 > #application_answer_button_2 > .jss102 > .jss101 > .jss793").check()
+         page.locator(
+             "div:nth-child(12) > .jss970 > #application_answer_button_3 > .jss102 > .jss101 > .jss793").check()
+
+         page.get_by_role("button", name="FECHAR").click()
+         page.get_by_role("button").first.click()
+
+         # Close browser
+         context.close()
+         browser.close()
